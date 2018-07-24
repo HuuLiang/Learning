@@ -1,0 +1,20 @@
+
+body {
+    text-align: center;
+    background-color: greenyellow;
+}
+
+h1 {
+    font-size: 40px;
+    margin-top: 40px;
+}
+
+#title {
+    color: darkgreen;
+    /*background-color: darkgreen;*/
+}
+
+#login {
+    /* background-color: greenyellow; */
+    margin: 50px 0 0 0
+}
