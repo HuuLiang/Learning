@@ -1,89 +1,47 @@
-document.write("<script type='text/javascript' language='JavaScript' src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js' async></script>");
+// document.write("<script type='text/javascript' language='JavaScript' src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js' async></script>");
 function GetXmlHttpObject() {
-    var xmlHttp=null;
-    try
-    {
+    var xmlHttp = null;
+    try {
         // Firefox, Opera 8.0+, Safari
-        xmlHttp=new XMLHttpRequest();
-    }
-    catch (e)
-    {
+        xmlHttp = new XMLHttpRequest();
+    } catch (e) {
         // Internet Explorer
-        try
-        {
-            xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
-        }
-        catch (e)
-        {
-            xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+        try {
+            xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e) {
+            xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
         }
     }
+
     return xmlHttp;
 }
 
-//获取指定form中的所有的<input>对象
-function getElements(formId) {
-    var form = document.getElementById(formId);
-    var elements = new Array();
-    var tagElements = form.getElementsByTagName('input');
-    for (var j = 0; j < tagElements.length; j++){
-        elements.push(tagElements[j]);
+function requestClient(formData, url, type, responseBlock) {
 
+    var xmlhttp = GetXmlHttpObject()
+
+    if (xmlhttp == null) {
+        printLog("Your browser is not support");
+        return;
     }
-    return elements;
-}
+    xmlhttp.onreadystatechange = function() {
 
-//获取单个input中的【name,value】数组
-function inputSelector(element) {
-    if (element.checked)
-        return [element.name, element.value];
-}
-
-function input(element) {
-    switch (element.type.toLowerCase()) {
-        case 'submit':
-        case 'hidden':
-        case 'password':
-        case 'text':
-            return [element.name, element.value];
-        case 'checkbox':
-        case 'radio':
-            return inputSelector(element);
-    }
-    return false;
-}
-
-//组合URL
-function serializeElement(element) {
-    var method = element.tagName.toLowerCase();
-    var parameter = input(element);
-
-    if (parameter) {
-        var key = encodeURIComponent(parameter[0]);
-        if (key.length == 0) return;
-
-        if (parameter[1].constructor != Array)
-            parameter[1] = [parameter[1]];
-
-        var values = parameter[1];
-        var results = [];
-        for (var i=0; i<values.length; i++) {
-            results.push(key + '=' + encodeURIComponent(values[i]));
+        if (xmlhttp.status == 200 && xmlhttp.readyState == 4) {
+            var response;
+            if (type == "Text") {
+                response = xmlhttp.responseText
+            } else if (type == "XML") {
+                response = xmlhttp.responseXML;
+            }
+            // console.log(response);
+            responseBlock(1, response);
         }
-        return results.join('&');
-    }
-}
+    };
 
-//调用方法
-function serializeForm(formId) {
-    var elements = getElements(formId);
-    var queryComponents = new Array();
+    xmlhttp.open("POST",url,true);
 
-    for (var i = 0; i < elements.length; i++) {
-        var queryComponent = serializeElement(elements[i]);
-        if (queryComponent)
-            queryComponents.push(queryComponent);
-    }
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 
-    return queryComponents.join('&');
+    xmlhttp.send("name=admin&password=123456");
+
 }

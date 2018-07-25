@@ -4,6 +4,7 @@
 $account = array('admin',
                 '123456');
 
+var_dump($account);
 $name = $_POST['name'];
 $password = $_POST['password'];
 if ($account[0]==$name && $account[1]==$password) {

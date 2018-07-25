@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Shop Info Collection System</title>
-    <!--<link rel="stylesheet" href="style.css">-->
     <style type="text/css">
 
         body {
@@ -18,7 +17,6 @@
             text-align: center;
         }
         label {
-            /*background-color: yellow;*/
             width:45%;
             display: inline-block;
             text-align: right;
@@ -29,30 +27,13 @@
         #inputSubmit {
             text-align: center;
         }
+        p[id="log"] {
+            text-align: center;
+        }
     </style>
     <script type="text/javascript" src="https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js"></script>
 </head>
 <body>
-    <script type="text/javascript">
-        var geolocation = new qq.maps.Geolocation("OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77", "myapp");
-
-        var options = {timeout: 8000};
-        function showPosition(position) {
-            if (position.addr==null){
-                printLog(position.nation+position.province+position.city);
-            } else {
-                printLog(position.addr);
-            }
-        };
-
-        function showErr(error) {
-            alert("定位失败!");
-        };
-
-        function printLog(log) {
-            document.getElementById("log").innerHTML=log;
-        }
-    </script>
 
     <h1>信息</h1>
     <div id="infomation">
@@ -77,14 +58,53 @@
                 <button type="button" name="locationBtn" onclick="geolocation.getLocation(showPosition, showErr, options)">获取定位</button>
                 <br/>
             </p>
+            <p class="upload"><label for="files">上传店铺照片</label>
+                <input type="file" accept="image/*" name="files" id="files" onchange="xxx()" multiple required/><br/>
+            </p>
+            <div id="imgs">
+                
+            </div>
             <div id="inputSubmit">
                 <input type="submit" value="提交"><br/>
             </div>
         </form>
+        <p id="log"></p>
     </div>
 
-    <h2 id="log"></h2>
-    <p id="demo">点击下面的按钮，获得对应信息：<br /></p>
+    <script type="text/javascript">
+        <!--定位-->
+        var geolocation = new qq.maps.Geolocation("CJBBZ-BYNL4-S7WUY-XBRSE-NQDSS-HWFCB", "ShopLocationKey");
+        var options = {timeout: 8000};
+        function showPosition(position) {
+            if (position.addr.length==0) {
+                document.getElementById("location").value=position.nation+position.province+position.city;
+            } else {
+                document.getElementById("location").value=position.addr;
+            }
+        };
+
+        function showErr() {
+            alert("定位失败");
+        };
+
+
+        function printLog(log) {
+            document.getElementById("log").innerHTML=document.getElementById("log").innerHTML+'<br/>'+log;
+        }
+
+        function xxx() {
+            printLog("begin files upload")
+            var files=document.getElementById("files").files;
+            console.log(files[0]);
+            // for (let i = 0; i < files.count; i++) {
+            //     var pos=files[i].lastIndexOf("\\");
+            //     printLog(files[i].substring(pos+1));
+            // }
+        }
+
+
+
+    </script>
 
 </body>
 </html>

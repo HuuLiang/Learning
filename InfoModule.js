@@ -2,42 +2,32 @@
 document.write("<script type='text/javascript' language='JavaScript' src='base.js'></script>");
 
 function login() {
-    // printLog("beginLogin")
-    var xmlhttp = GetXmlHttpObject()
-    if (xmlhttp==null) {
-        printLog("Your browser is not support");
-        return;
-    }
-    // noinspection JSAnnotator
-    xmlhttp.onreadystatechange=function() {
-        if (xmlhttp.status==200 && xmlhttp.readyState==4) {
-            var responseCode=xmlhttp.responseText;
-            login_result(responseCode);
-        } else {
-            console.log(xmlhttp.status);
-        }
-    }
-    var paraments = eval(document.getElementById("name")).name + "=" + eval(document.getElementById("name")).value +"&"+ eval(document.getElementById("password")).name + "="+ eval(document.getElementById("password")).value;
-    // printLog(paraments);
-    xmlhttp.open("POST","login.php",true);
-    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send(paraments);
+    var form=new FormData();
+    form.append("name",eval(document.getElementById("name")).value);
+    form.append("password",eval(document.getElementById("password")).value);
+
+    printLog("login");
+
+    requestClient(form,"login.php","Text",function (success,responseValue) {
+        // printLog(success+"--"+responseValue);
+        // console.log(success+"--"+responseValue);
+        Boolean(success) ? login_result(responseValue):login_error();
+    })
 }
 
 function login_result(code) {
-    // printLog("result code is " + code);
     if (code==0) {
         alert("登录成功");
-        window.location.href='info.html';
+        // window.location.href='info.html';
     } else if (code==1) {
         alert("登录失败，账号信息错误，请检查重试");
     }
 }
 
-function printLog(log) {
-    document.getElementById("log").innerText=log;
+function login_error() {
+    alert("网络错误");
 }
 
-function showerror() {
-    alert("error");
+function printLog(log) {
+    document.getElementById("log").innerHTML=document.getElementById("log").innerHTML+'<br/>'+log;
 }
