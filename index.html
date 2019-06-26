@@ -8,15 +8,16 @@
     <title>Shop Info Collection System</title>
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="#" />
-    <script type="text/javascript" language="JavaScript" src="InfoModule.js"></script>
+    <script type="text/javascript" language="JavaScript" src="base.js"></script>
+    <script type="text/javascript" language="JavaScript" src="loginModule.js"></script>
 </head>
 
-<body>
+<body onload="checkCookie()">
     <div id="title">
         <h1>门店信息采集系统</h1>
     </div>
     <div id="login">
-        <form action="javascript:login()" method="post" autocomplete="off">
+        <form action="javascript:login()" autocomplete="off">
             <label for="name">用户名:</label>
             <input type="text" name="name" id="name" autocomplete="off" required/>
             <br/>
@@ -28,12 +29,6 @@
             <input type="submit" value="登录">
         </form>
     </div>
-
-    <!--<div class="infoClass">-->
-        <!--<form action="javascript:login_result(0)">-->
-                <!--<input type="submit" value="submit">-->
-            <!--</form>-->
-    <!--</div>-->
 
     <h2 id="log"></h2>
 </body>

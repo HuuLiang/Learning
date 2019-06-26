@@ -1,4 +1,5 @@
 // document.write("<script type='text/javascript' language='JavaScript' src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js' async></script>");
+
 function GetXmlHttpObject() {
     var xmlHttp = null;
     try {
@@ -15,6 +16,7 @@ function GetXmlHttpObject() {
 
     return xmlHttp;
 }
+
 
 function requestClient(formData, url, type, responseBlock) {
 
@@ -33,15 +35,45 @@ function requestClient(formData, url, type, responseBlock) {
             } else if (type == "XML") {
                 response = xmlhttp.responseXML;
             }
-            // console.log(response);
             responseBlock(1, response);
         }
     };
 
     xmlhttp.open("POST",url,true);
-
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send(formData);
+}
 
-    xmlhttp.send("name=admin&password=123456");
+//过期时间设定为几分钟
+function setCookie(cname,cvalue,exmins){
+    var d = new Date();
+    d.setTime(d.getTime()+(exmins*60*1000));
+    var expires = "expires="+d.toGMTString();
+    document.cookie = cname+"="+ encodeURIComponent(cvalue)+"; "+expires;
+}
+function getCookie(cname){
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(name)==0) {
+            return c.substring(name.length,c.length);
+        }
+    }
+    return "";
+}
 
+function checkCookie(){
+    let cname="CollectionSystemCookie";
+    var cvalue=getCookie(cname);
+    if (user!=""){
+        //获取到了cookie 自动填充账号密码
+
+    }
+    else {
+        user = prompt("请输入你的名字:","");
+        if (user!="" && user!=null){
+            setCookie("username",user,30);
+        }
+    }
 }
